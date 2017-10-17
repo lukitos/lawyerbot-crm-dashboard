@@ -16,8 +16,26 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      currentUser: null,
       redirect: false
     };
+  }
+
+  componentDidMount() {
+    console.log('firebase ', firebase);
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+         currentUser: {
+           displayName: user.displayName,
+           email: user.email,
+           photoURL: user.photoURL
+         }
+        });
+      } else {
+        console.log('in Auth componentDidMount >>> no user logged in');
+      }
+    });
   }
 
   handleLogin = (values) => {

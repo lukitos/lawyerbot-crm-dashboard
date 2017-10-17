@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import * as clientAction from './actions/client';
@@ -26,7 +26,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: null
+      currentUser: null,
+      authenticated: null
     };
   }
 
@@ -60,56 +61,37 @@ class App extends Component {
     const history = createBrowserHistory();
 
     console.log('in App >>> state.currentUser=', this.state.currentUser);
-
-    if (this.state.currentUser === null) {
-
-      return (
-        <Router history={history}>
-          <div className="container">
-            <div className="row">
-              <div className="col">
-                <Switch>
-                  <Route exact path="/" component={Login} />
-                </Switch>
-              </div>
+    return (
+      this.state.authenticated ?
+      <Router key={counter} history={history}>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-2 sidebar">
+              <br/>
+              <Logo />
+              <br/>
+              <LeftNav />
+            </div>
+            <div className="col-md-10">
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/clients" component={ClientList} />
+              <Route exact path="/client/:id" component={ClientForm} />
+              <Route exact path="/detail/:id" component={ClientDetail} />
             </div>
           </div>
-        </Router>
-      );
-
-    } else if (this.state.currentUser.displayName !== '') {
-
-      return (
-        <Router key={counter} history={history}>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-2 sidebar">
-                <br/>
-                <Logo />
-                <br/>
-                <LeftNav />
-              </div>
-              <div className="col-md-10">
-                <Switch>
-                <Route exact path="/home" component={Home} />
-                <Route exact path="/clients" component={ClientList} />
-                <Route exact path="/client/:id" component={ClientForm} />
-                <Route exact path="/detail/:id" component={ClientDetail} />
-                </Switch>
-              </div>
+        </div>
+      </Router>
+      :
+      <Router history={history}>
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <Route exact path="/" component={Login} />
             </div>
           </div>
-        </Router>
-      );
-
-    } else {
-
-      return (
-        <div></div>
-      );
-
-    }
-
+        </div>
+      </Router>
+    );
   }
 
 }

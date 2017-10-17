@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 // import { Redirect } from 'react-router';
 import firebase from '../firebase';
-import config from '../config';
-
-const DASHBOARD_URL = config.DASHBOARD_URL;
 
 class LeftNav extends Component {
   constructor() {
@@ -26,15 +22,11 @@ class LeftNav extends Component {
   }
 
   render() {
-    console.log('in LeftNav >>> state=', this.state);
-    console.log('in LeftNav >>> props=', this.props);
     const { redirect } = this.state;
 
     if (redirect) {
       // window.location.replace("http://capstonelawyerbot.s3-website.us-east-2.amazonaws.com/");
-      // window.location.replace("http://localhost:3000");
-      window.location.replace(DASHBOARD_URL);
-      // return <Redirect to='/' />;
+      window.location.replace("http://localhost:3000");
     } else {
       return (
         <div>
@@ -53,10 +45,4 @@ class LeftNav extends Component {
 
 }
 
-function mapStateToProps(state, props) {
-  return {
-    clients: state.clients
-  }
-}
-
-export default connect(mapStateToProps)(LeftNav)
+export default LeftNav;
